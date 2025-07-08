@@ -40,8 +40,7 @@ def main():
         'current_batch': 0
     }
 
-    config = {"recursion_limit": 100}
-    result = graph.invoke(initial_state, config=config)
+    result = graph.invoke(initial_state)
 
     # Print the results
     print("=== GRAPH EXECUTION RESULT ===")

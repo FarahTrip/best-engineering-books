@@ -8,7 +8,7 @@ def inject_crawled_content(state: State, current_batch: int) -> str:
     if not crawled_content:
         return ""
     
-    batch_size = 5
+    batch_size = 3
     start_idx = current_batch * batch_size
     end_idx = start_idx + batch_size
     batch_content = crawled_content[start_idx:end_idx]
@@ -19,12 +19,12 @@ def inject_crawled_content(state: State, current_batch: int) -> str:
     formatted_content = []
     for item in batch_content:
         if isinstance(item, str):
-            formatted_content.append(item[:800])
+            formatted_content.append(item)
         else:
-            content = item.get('content', '')[:800]
+            content = item.get('content', '')[:3000]
             title = item.get('title', 'No title')
             url = item.get('url', '')
-            formatted_content.append(f"Title: {title}\nContent: {content}\n---\n")
+            formatted_content.append(f"Title: {title}\nURL: {url}\nContent: {content}\n---\n")
     
     return "\n".join(formatted_content)
 
@@ -32,7 +32,7 @@ def get_total_batches(state: State) -> int:
     crawled_content = state.get('crawled_content', [])
     if not crawled_content:
         return 0
-    batch_size = 5
+    batch_size = 3
     return (len(crawled_content) + batch_size - 1) // batch_size
 
 def has_more_batches(state: State) -> bool:
