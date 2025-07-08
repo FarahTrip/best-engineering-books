@@ -1,6 +1,6 @@
 import os
 import json
-from nodes import web_search, should_continue_processing, book_finding_node, save_books_node
+from nodes import ai_enrich_books_node, web_search, should_continue_processing, book_finding_node, save_books_node
 from state import State
 from langgraph.graph import START, END, StateGraph
 from nodes import initial_node, crawler_node
@@ -14,11 +14,13 @@ def main():
     graph_builder.add_node("crawler", crawler_node)
     graph_builder.add_node("book_finding", book_finding_node)
     graph_builder.add_node("save_books", save_books_node)
+    graph_builder.add_node("ai_enrich_books", ai_enrich_books_node)
 
     graph_builder.add_edge(START, "initial")
     graph_builder.add_edge("initial", "web_search")
     graph_builder.add_edge("web_search", "crawler")
     graph_builder.add_edge("crawler", "book_finding")
+    graph_builder.add_edge("ai_enrich_books", "save_books")
     graph_builder.add_edge("save_books", END)
     
     graph_builder.add_conditional_edges(
@@ -26,7 +28,7 @@ def main():
         should_continue_processing,
         {
             "book_finding": "book_finding",
-            "save_books": "save_books"
+            "ai_enrich_books": "ai_enrich_books"
         }
     )
 
