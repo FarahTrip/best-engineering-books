@@ -1,4 +1,3 @@
-from turtle import mode
 from tavily import TavilyClient
 import os
 from schemas import Book, SearchResult, BookList
